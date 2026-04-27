@@ -103,3 +103,22 @@ Both components use **TCP sockets** and **PyAudio** for low‑latency audio stre
 The system is completely self‑contained and no internet required, works on a local network.
 
 Full code, setup instructions, and usage examples are available in the [`hermes/`](hermes/) folder.
+
+## Thermal Imaging & Victim Assessment (AMG8833)
+The thermal camera module provides the SARBot with the ability to "see" heat signatures, which is critical for locating survivors in low-visibility environments or determining if a detected person has a vital heat signature.
+
+### Key Features
+- **Thermal Heat Mapping:** Uses an AMG8833 Grid-EYE sensor to detect infrared radiation and convert it into a temperature-based visual matrix.
+- **Enhanced Resolution:** Implements **Bicubic Interpolation** to upscale the raw 8x8 sensor data into a smooth 32x32 heatmap, providing a much clearer image for the operator.
+- **Real-Time Visualization:** Uses the 'Inferno' colormap for high-contrast thermal imaging, allowing for quick identification of body heat against colder backgrounds.
+- **Dynamic Range Scaling:** Automatically adjusts the color scale's sensitivity based on the environment's minimum and maximum temperatures to ensure the survivor is always visible.
+
+### How It Works
+1. **I2C Data Acquisition:** The system polls the AMG8833 sensor via I2C, reading 128 bytes of raw data per frame.
+2. **Processing Pipeline:**
+   - Raw bytes are converted into Celsius values with 0.25°C precision.
+   - The data is reshaped into an 8x8 matrix.
+   - `scipy.interpolate` is used to generate a high-resolution grid, filling in the gaps between the physical sensor pixels.
+3. **Continuous Monitoring:** The script runs in a dedicated loop, refreshing the thermal display in real-time alongside the robot's main AI and video streams.
+
+This module adds a layer of **life-detection capability**, allowing rescuers to differentiate between a static object and a living survivor based on thermal radiation.

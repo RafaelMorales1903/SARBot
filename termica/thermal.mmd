@@ -1,0 +1,9 @@
+graph TD
+    A[Inicio: Sensor AMG8833] --> B[Lectura I2C: 4 bloques]
+    B --> C[Conversion: Bytes a Celsius]
+    C --> D[Reshape: Matriz 8x8]
+    D --> E[Interpolacion Bicubica]
+    E --> F[Visualizacion: Matplotlib]
+    F --> G{Continuar?}
+    G -->|Si| B
+    G -->|No| H[Fin: Cerrar Bus]
