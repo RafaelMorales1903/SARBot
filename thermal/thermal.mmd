@@ -1,0 +1,14 @@
+graph TD
+    A[Start: AMG8833 Sensor] --> B[I2C Read: 4-Block Sequence]
+    B --> C[Conversion: Bytes to Celsius]
+    D --> E[Bicubic Interpolation]
+    C --> D[Reshape: 8x8 Matrix]
+    E --> F[Visualization: Matplotlib]
+    F --> G{Continue?}
+    G -->|Yes| B
+    G -->|No| H[End: Close I2C Bus]
+
+    %% Estilos para que se vea más profesional
+    style A fill:#dfd,stroke:#333
+    style H fill:#fdd,stroke:#333
+    style E fill:#dff,stroke:#333
